@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#101c24" />
+    <meta
+      name="description"
+      content="A private table, a handful of dice, and a very good bluff. Play Liar’s Dice with up to ten friends."
+    />
+    <title>Liar’s Dice — Call the bluff.</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script type="module" src="app.js"></script>
+  </head>
+  <body>
+    <div class="page-glow" aria-hidden="true"></div>
+    <header class="site-header">
+      <a class="brand" href="./" aria-label="Liar’s Dice home"
+        ><span class="brand-icon" aria-hidden="true">⚄</span
+        ><span>LIAR’S DICE<small>A GAME OF NERVE</small></span></a
+      >
+      <button class="button text-button" id="rules-button" type="button">
+        How to play <span aria-hidden="true">↗</span>
+      </button>
+    </header>
+    <main id="main-content">
+      <section id="home-view" class="home-view">
+        <div class="hero-copy">
+          <div class="eyebrow">
+            <span class="status-dot"></span> YOUR FRIENDS. YOUR TABLE.
+          </div>
+          <h1>Trust your dice.<br /><em>Question everyone.</em></h1>
+          <p>
+            Five dice. One good bluff. Get your friends around a table—wherever
+            they are.
+          </p>
+          <div class="feature-pills">
+            <span>2–10 players</span><span>Ones are wild</span
+            ><span>No account to create</span>
+          </div>
+        </div>
+        <div class="home-layout">
+          <section class="entry-card" aria-labelledby="online-heading">
+            <div class="section-topline">
+              <span class="eyebrow">PLAY ON YOUR OWN DEVICES</span
+              ><span class="tiny-tag">ONLINE</span>
+            </div>
+            <h2 id="online-heading">Pull up a chair.</h2>
+            <p class="muted">
+              Start a private table or join your friends with a room code.
+            </p>
+            <div id="setup-notice" class="notice" hidden>
+              Online tables need a one-time database setup. Follow README.md,
+              then add your public Supabase settings to config.js. Pass &amp;
+              play works right now.
+            </div>
+            <div class="entry-tabs" role="tablist" aria-label="Online play">
+              <button
+                type="button"
+                role="tab"
+                id="create-tab"
+                aria-selected="true"
+                aria-controls="create-panel"
+                data-entry-tab="create"
+                tabindex="0"
+              >
+                Create a table</button
+              ><button
+                type="button"
+                role="tab"
+                id="join-tab"
+                aria-selected="false"
+                aria-controls="join-panel"
+                data-entry-tab="join"
+                tabindex="-1"
+              >
+                Join a table
+              </button>
+            </div>
+            <form
+              id="create-panel"
+              class="entry-form"
+              role="tabpanel"
+              aria-labelledby="create-tab"
+            >
+              <label for="create-name">Your name</label
+              ><input
+                id="create-name"
+                name="name"
+                autocomplete="nickname"
+                maxlength="20"
+                placeholder="What should we call you?"
+                required
+              />
+              <button type="submit" class="button primary full-width">
+                Create a table <span aria-hidden="true">→</span>
+              </button>
+            </form>
+            <form
+              id="join-panel"
+              class="entry-form"
+              role="tabpanel"
+              aria-labelledby="join-tab"
+              hidden
+            >
+              <label for="join-name">Your name</label
+              ><input
+                id="join-name"
+                name="name"
+                autocomplete="nickname"
+                maxlength="20"
+                placeholder="What should we call you?"
+                required
+              />
+              <label for="join-code">Room code</label
+              ><input
+                id="join-code"
+                name="code"
+                class="room-code-input"
+                autocomplete="off"
+                autocapitalize="characters"
+                spellcheck="false"
+                maxlength="6"
+                minlength="6"
+                placeholder="ABC123"
+                required
+              />
+              <button type="submit" class="button primary full-width">
+                Join the table <span aria-hidden="true">→</span>
+              </button>
+            </form>
+            <div id="captcha-container" class="captcha-container"></div>
+            <button
+              id="resume-button"
+              class="button secondary full-width resume-button"
+              type="button"
+              hidden
+            >
+              Return to your table
+            </button>
+            <p class="micro-copy">
+              Share the code. Keep your dice to yourself.
+            </p>
+          </section>
+          <aside class="atmosphere-card" aria-label="Game overview">
+            <div class="table-ring ring-one"></div>
+            <div class="table-ring ring-two"></div>
+            <div class="table-art-copy">
+              <span class="eyebrow">THE HOUSE RULE</span>
+              <h2>Ones play<br />for everyone.</h2>
+              <p>Every one counts toward<br />the face you’re bidding on.</p>
+            </div>
+            <div class="art-dice" aria-hidden="true">
+              <div class="die die-five">
+                <i></i><i></i><i></i><i></i><i></i>
+              </div>
+              <div class="die die-one wild"><i></i></div>
+              <div class="die die-three"><i></i><i></i><i></i></div>
+            </div>
+            <div class="art-bottom">
+              <span>THE BLUFF IS YOURS.</span><span>THE CALL IS THEIRS.</span>
+            </div>
+          </aside>
+        </div>
+        <details class="local-details" id="local-details">
+          <summary>
+            <span
+              ><strong>Sharing one device?</strong
+              ><span class="muted"> Pass &amp; play</span></span
+            ><span class="details-chevron" aria-hidden="true">+</span>
+          </summary>
+          <form id="local-form">
+            <p class="muted">
+              Hand the device to the next player between turns. Your dice stay
+              behind a privacy screen.
+            </p>
+            <div class="local-count">
+              <label for="local-count">Players</label
+              ><select id="local-count" name="count">
+                <option>2</option>
+                <option>3</option>
+                <option selected>4</option>
+                <option>5</option>
+                <option>6</option>
+                <option>7</option>
+                <option>8</option>
+                <option>9</option>
+                <option>10</option>
+              </select>
+            </div>
+            <div class="local-names" id="local-names"></div>
+            <button class="button secondary" type="submit">
+              Start pass &amp; play <span aria-hidden="true">→</span>
+            </button>
+            <p class="micro-copy">
+              Local games end if you refresh or close the page.
+            </p>
+          </form>
+        </details>
+        <div class="how-it-works">
+          <div>
+            <span>01</span>
+            <p>
+              <strong>Keep your dice close.</strong>Everyone starts with five
+              hidden dice.
+            </p>
+          </div>
+          <div>
+            <span>02</span>
+            <p>
+              <strong>Raise the stakes.</strong>Bid on all the dice around the
+              table.
+            </p>
+          </div>
+          <div>
+            <span>03</span>
+            <p>
+              <strong>Call the bluff.</strong>The loser drops a die. Last player
+              wins.
+            </p>
+          </div>
+        </div>
+      </section>
+      <section
+        id="game-view"
+        class="game-view"
+        hidden
+        aria-label="Your Liar’s Dice table"
+      ></section>
+      <div id="connection-banner" class="connection-banner" hidden>
+        <span id="connection-message"
+          >Connection interrupted. Your table is still here.</span
+        ><button
+          id="retry-button"
+          class="button compact secondary"
+          type="button"
+        >
+          Retry</button
+        ><button
+          id="home-button"
+          class="button compact secondary"
+          type="button"
+          hidden
+        >
+          Back home
+        </button>
+      </div>
+      <div
+        id="message-box"
+        class="message-box"
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+        hidden
+      ></div>
+    </main>
+    <footer class="site-footer">
+      <span>LIAR’S DICE</span><span>A little luck. A lot of nerve.</span>
+    </footer>
+    <dialog id="rules-dialog" aria-labelledby="rules-title">
+      <div class="dialog-heading">
+        <span class="eyebrow">LEARN THE TABLE</span
+        ><button
+          class="icon-button"
+          id="close-rules"
+          type="button"
+          aria-label="Close rules"
+        >
+          ×
+        </button>
+      </div>
+      <h2 id="rules-title">The art of the bluff.</h2>
+      <ol class="rules-list">
+        <li>
+          <strong>Start with five dice.</strong> Each player rolls privately. A
+          bid counts dice across the whole table, not just your hand.
+        </li>
+        <li>
+          <strong>Ones are always wild.</strong> Bid on faces 2 through 6. A bid
+          of “four fives” means at least four dice show a five or a one.
+        </li>
+        <li>
+          <strong>Raise or challenge.</strong> Raise the quantity using any
+          face, or keep the quantity and raise the face. You cannot bid on ones
+          or bid more dice than are in play.
+        </li>
+        <li>
+          <strong>Call “Liar!”</strong> The table reveals its dice. If the bid
+          falls short, the bidder loses one die. If it is met, the challenger
+          loses one.
+        </li>
+        <li>
+          <strong>Stay in the game.</strong> The loser starts the next round, or
+          the next player clockwise if the loser is out. A random player starts
+          the first round. The last player with dice wins.
+        </li>
+      </ol>
+      <div class="notice">
+        No exact calls or special one-die rounds. Ones stay wild throughout.
+      </div>
+      <button id="got-rules" class="button primary full-width" type="button">
+        Got it. Let’s play.
+      </button>
+    </dialog>
+    <dialog id="confirm-dialog" aria-labelledby="confirm-title">
+      <div class="dialog-heading">
+        <span class="eyebrow">LEAVING SO SOON?</span>
+      </div>
+      <h2 id="confirm-title">Leave this table?</h2>
+      <p id="confirm-copy" class="muted"></p>
+      <div class="button-row">
+        <button id="cancel-leave" class="button secondary" type="button">
+          Stay</button
+        ><button id="confirm-leave" class="button danger" type="button">
+          Leave table
+        </button>
+      </div>
+    </dialog>
+    <dialog
+      id="privacy-dialog"
+      class="privacy-dialog"
+      aria-labelledby="privacy-title"
+    >
+      <div class="privacy-symbol" aria-hidden="true">⚄</div>
+      <div class="eyebrow">PASS THE DEVICE</div>
+      <h2 id="privacy-title">Your turn.</h2>
+      <p id="privacy-copy">Make sure only you can see the screen.</p>
+      <button id="reveal-local" class="button primary full-width" type="button">
+        I’m ready — show my dice</button
+      ><button id="privacy-quit" class="button text-button" type="button">
+        End local game
+      </button>
+    </dialog>
+    <noscript
+      ><p class="notice">
+        Please enable JavaScript to play Liar’s Dice.
+      </p></noscript
+    >
+  </body>
+</html>
